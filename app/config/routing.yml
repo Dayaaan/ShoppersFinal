@@ -1,0 +1,9 @@
+shop_products:
+    resource: "@ShopProductsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+shop_front:
+    resource: "@ShopFrontBundle/Controller/"
+    type:     annotation
+    prefix:   /

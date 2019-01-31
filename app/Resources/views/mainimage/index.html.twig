@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mainimages list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Imagename</th>
+                <th>Imagesize</th>
+                <th>Updatedat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mainImage in mainImages %}
+            <tr>
+                <td><a href="{{ path('mainimage_show', { 'id': mainImage.id }) }}">{{ mainImage.id }}</a></td>
+                <td>{{ mainImage.imageName }}</td>
+                <td>{{ mainImage.imageSize }}</td>
+                <td>{% if mainImage.updatedAt %}{{ mainImage.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('mainimage_show', { 'id': mainImage.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('mainimage_edit', { 'id': mainImage.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('mainimage_new') }}">Create a new mainImage</a>
+        </li>
+    </ul>
+{% endblock %}
