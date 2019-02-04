@@ -65,6 +65,23 @@ class ProductController extends Controller
             'form' => $form->createView(),
         ));
     }
+    /**   
+    * @Route("/sortproducts", name="sortproducts")
+    */
+    public function sortProductsByNameAction(Request $request) {
+        
+        if ($request->isXmlHttpRequest()) {
+            $orderby = $request->request->get('orderby');
+            $column = $request->request->get('column');
+            $em = $this->getDoctrine()->getManager();
+            if ($column == 'name') {
+                $products = $em->getRepository(Product::class)->findBy([],['name' => $orderby]);
+            } else {
+                $products = $em->getRepository(Product::class)->findBy([],['price' => $orderby]);
+            }
+            return $this->render('product/productajax.html.twig', ['products' => $products]);
+        }   
+    }
 
     /**
      * Finds and displays a product entity.

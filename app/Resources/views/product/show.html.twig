@@ -1,52 +1,113 @@
-{% extends 'base.html.twig' %}
+{% extends('base.html.twig') %}
 
 {% block body %}
-    <h1>Product</h1>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ product.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product.description }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ product.price }}</td>
-            </tr>
-            <tr>
-                <th>Quantity</th>
-                <td>{{ product.quantity }}</td>
-            </tr>
-            <tr>
-                <th>Createdat</th>
-                <td>{% if product.createdAt %}{{ product.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updatedat</th>
-                <td>{% if product.updatedAt %}{{ product.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="bg-light py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Tank Top T-Shirt</strong></div>
+      </div>
+    </div>
+  </div>  
 
-    <ul>
-        <li>
-            <a href="{{ path('product_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('product_edit', { 'id': product.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-{% endblock %}
+  <div class="site-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="slider slider-for">
+                  <div><img src="{{ vich_uploader_asset(product.mainImage, 'imageFile') }}"
+                            alt="" class="img-fluid"></div>
+                  {% for productImage in product.images %}
+
+                  <div><img src="{{ vich_uploader_asset(productImage, 'imageFile') }}"
+                            alt="" class="img-fluid"></div>
+                  {% endfor %}
+              </div>
+              <div class="slider slider-nav" role="toolbar">
+                  <div><img src="{{ vich_uploader_asset(product.mainImage, 'imageFile') }}"
+                            alt="" class="img-fluid"></div>
+                  {% for productImage in product.images %}
+
+                      <div><img src="{{ vich_uploader_asset(productImage, 'imageFile') }}"
+                           alt="" class="img-fluid"></div>
+                  {% endfor %}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h2 class="text-black">{{ product.name }}</h2>
+          <p>{{ product.description }}</p>
+          <em>Categorie : </em>
+          {% for productCategory in product.categories %}
+              <em class="mb-4">{{ productCategory }} {% if not loop.last %}/{% endif %} </em>  
+          {% endfor %}
+          <br>
+          <br>
+          <p><strong class="text-primary h4">{{ product.price }} €</strong></p>
+          <div class="mb-1 d-flex">
+            <label for="option-sm" class="d-flex mr-3 mb-3">
+              <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-sm" name="shop-sizes"></span> <span class="d-inline-block text-black">Small</span>
+            </label>
+            <label for="option-md" class="d-flex mr-3 mb-3">
+              <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-md" name="shop-sizes"></span> <span class="d-inline-block text-black">Medium</span>
+            </label>
+            <label for="option-lg" class="d-flex mr-3 mb-3">
+              <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-lg" name="shop-sizes"></span> <span class="d-inline-block text-black">Large</span>
+            </label>
+            <label for="option-xl" class="d-flex mr-3 mb-3">
+              <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-xl" name="shop-sizes"></span> <span class="d-inline-block text-black"> Extra Large</span>
+            </label>
+          </div>
+          {# <form action="{{ path('addtocart', {'id' : product.id}) }}" method="POST"> #}
+            <div class="mb-5">
+              <div class="input-group mb-3" style="max-width: 120px;">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
+              </div>
+              <input type="text" name="quantity" class="form-control text-center" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
+              </div>
+            </div>
+
+            </div>
+            <button type="submit" class="buy-now btn btn-sm btn-primary">Add To Cart</button>
+        </div>
+        </form>
+      </div>
+      <br>
+      <br>
+  </div>
+
+
+{% endblock body %}
+{% block js %}
+
+<script
+    src="https://code.jquery.com/jquery-1.7.0.min.js"
+    integrity="sha256-/05Jde9AMAT4/o5ZAI23rUf1SxDYTHLrkOco0eyRV84="
+    crossorigin="anonymous">
+</script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('.slider-for').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                fade: true,
+                asNavFor: '.slider-nav'
+            });
+            $('.slider-nav').slick({
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                asNavFor: '.slider-for',
+                dots: true,
+                centerMode: true,
+                focusOnSelect: true,
+                autoplay: true
+            });
+        });
+    </script>
+<script type="text/javascript" src="{{ asset('js/slick.min.js') }}"></script>
+
+
+{% endblock js %}

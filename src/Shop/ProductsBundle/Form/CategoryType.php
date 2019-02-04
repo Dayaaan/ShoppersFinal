@@ -3,8 +3,10 @@
 namespace Shop\ProductsBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Shop\ProductsBundle\Form\MainImageType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class CategoryType extends AbstractType
 {
@@ -13,7 +15,11 @@ class CategoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')->add('description');
+        $builder->add('name')
+                ->add('description')
+                ->add('mainImage', MainImageType::class)
+                ->add('Submit', SubmitType::class)
+        ;
     }/**
      * {@inheritdoc}
      */

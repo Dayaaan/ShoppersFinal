@@ -10,4 +10,17 @@ namespace Shop\ProductsBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function sortProductByPrice() {
+        $query = $this->createQueryBuilder('p')
+                      ->orderBy('p.price', 'ASC')
+                      ->getQuery();
+        return $query->execute();
+    }
+    public function sortProductByName($name) {
+        $query = $this->createQueryBuilder('p')
+                      ->Where('p.name LIKE :name' )
+                      ->setParameter('name', '%' . $name . '%')
+                      ->getQuery();
+        return $query->execute();
+    }
 }

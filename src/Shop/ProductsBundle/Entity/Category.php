@@ -34,6 +34,10 @@ class Category
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
+    /** 
+     * @ORM\OneToOne(targetEntity="MainImage", cascade={"persist", "remove"})
+     */
+    private $mainImage;
 
     /**
      * @var \DateTime
@@ -162,5 +166,29 @@ class Category
     }
     public function __toString() {
         return $this->name;
+    }
+
+    /**
+     * Set mainImage
+     *
+     * @param \Shop\ProductsBundle\Entity\MainImage $mainImage
+     *
+     * @return Category
+     */
+    public function setMainImage(\Shop\ProductsBundle\Entity\MainImage $mainImage = null)
+    {
+        $this->mainImage = $mainImage;
+
+        return $this;
+    }
+
+    /**
+     * Get mainImage
+     *
+     * @return \Shop\ProductsBundle\Entity\MainImage
+     */
+    public function getMainImage()
+    {
+        return $this->mainImage;
     }
 }

@@ -4,6 +4,14 @@ parameters:
     app.path.product_images: /uploads/images/products
 
 services:
+    app.form.registration:
+        class: Shop\UserBundle\Form\RegistrationType
+        tags:
+            - { name: form.type, alias: app_user_registration }
+    app.profile.form.type:
+        class: Shop\UserBundle\Form\ProfileType
+        tags:
+            - { name: form.type, alias: app_user_profile }
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services

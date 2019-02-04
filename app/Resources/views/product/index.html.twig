@@ -21,7 +21,7 @@
               <div class="d-flex">
                 <div class="dropdown mr-1 ml-md-auto">
                   <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Latest
+                    Categories
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
                     <a class="dropdown-item" href="#">Men</a>
@@ -30,20 +30,19 @@
                   </div>
                 </div>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuReference" data-toggle="dropdown">Reference</button>
+                  <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuReference" data-toggle="dropdown">Order By</button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                    <a class="dropdown-item" href="#">Relevance</a>
-                    <a class="dropdown-item" href="#">Name, A to Z</a>
-                    <a class="dropdown-item" href="#">Name, Z to A</a>
+                    <a class="dropdown-item sortproducts" data-sort="ASC" data-type="name" href="#">Name, A to Z</a>
+                    <a class="dropdown-item sortproducts" data-sort="DESC" data-type="name" href="#">Name, Z to A</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Price, low to high</a>
-                    <a class="dropdown-item" href="#">Price, high to low</a>
+                    <a class="dropdown-item sortproducts" data-sort="ASC" data-type="price" href="#">Price, low to high</a>
+                    <a class="dropdown-item sortproducts" data-sort="DESC" data-type="price" href="#">Price, high to low</a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row mb-5">
+          <div class="row mb-5 ajax">
             {% for product in products %}
             <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
               <div class="block-4 text-center border">
@@ -52,8 +51,10 @@
                 </figure>
                 <div class="block-4-text p-4">
                   <h3><a href="shop-single.html">{{ product.name }}</a></h3>
-                  <p class="mb-0">{{ product.description }}</p>
+                  <p class="mb-0">{{ product.description | slice(0,60) }}</p>
                   <p class="text-primary font-weight-bold">{{ product.price }} €</p>
+                  <a href="#" class="buy-now btn btn-sm btn-primary" style="color:white;"><span class="icon icon-shopping-cart"></span></a>
+              
                 </div>
               </div>
             </div>
@@ -177,3 +178,27 @@
     </div>
   </div>
 {% endblock %}
+{% block js %}
+<script type="text/javascript">
+    $('.sortproducts').on("click", function() {
+        var sort = $(this).attr("data-sort");
+        var type = $(this).attr("data-type");
+        $.ajax({
+            method: "post",
+            url: '{{ path('sortproducts') }}',
+            dataType: "html",
+            data: { 'orderby': sort,
+                    'column': type
+                  }
+        }).done( function(response) {
+            console.log('fefe');
+            $('.ajax').html('');  
+            $('.ajax').append(response); 
+            
+        }).fail(function(jxh,textmsg,errorThrown){
+            console.log(textmsg);
+            console.log(errorThrown);
+        });
+    })  
+</script>
+{% endblock js %}
